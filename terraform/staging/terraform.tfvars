@@ -1,0 +1,5 @@
+environment   = "staging"
+app_name      = ""
+project_id    = ""
+region        = "us-central1"
+custom_domain = ""

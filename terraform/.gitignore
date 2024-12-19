@@ -1,0 +1,10 @@
+# providers and child modules
+.terraform
+
+# state files
+terraform.tfstate
+terraform.tfstate.*
+
+# state lock files
+.terraform.tfstate.lock.info
+
