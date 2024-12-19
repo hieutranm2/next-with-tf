@@ -4,7 +4,7 @@ module "project_services" {
 
   project_id                  = var.project_id
   enable_apis                 = true
-  disable_services_on_destroy = true
+  disable_services_on_destroy = false
 
   activate_apis = [
     "compute.googleapis.com",
