@@ -4,14 +4,14 @@ on:
   workflow_run:
     workflows: ["ci-terraform"]
     branches:
-      - develop
+      - development
       - staging
       - production
     types:
       - completed
   push:
     branches:
-      - develop
+      - development
       - staging
       - production
     paths:

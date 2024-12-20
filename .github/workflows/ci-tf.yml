@@ -3,7 +3,7 @@ name: ci-terraform
 on:
   pull_request:
     branches:
-      - develop
+      - development
       - staging
       - production
     paths:
