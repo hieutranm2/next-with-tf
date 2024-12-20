@@ -22,7 +22,9 @@ jobs:
       run:
         shell: bash
         working-directory: ./terraform
+    environment: ${{ github.ref_name}}
     permissions:
+      contents: read
       pull-requests: write
     timeout-minutes: 20
     steps:
