@@ -30,6 +30,7 @@ jobs:
     environment: ${{ github.ref_name }}
     permissions:
       contents: read
+      id-token: write
     timeout-minutes: 20
     steps:
       - name: Checkeckout repository

@@ -26,6 +26,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      id-token: write
     timeout-minutes: 20
     steps:
       - name: Checkeckout repository
