@@ -39,7 +39,8 @@ jobs:
       - name: Authenticate to GCP
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          service_account: '${{ secrets.GCP_SA }}'
+          workload_identity_provider: '${{ secrets.GCP_WIP }}'
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
