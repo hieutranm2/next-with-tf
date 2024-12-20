@@ -27,7 +27,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success'
-    environment: ${{ github.ref_name}}
+    environment: ${{ github.ref_name }}
     permissions:
       contents: read
     timeout-minutes: 20
