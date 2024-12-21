@@ -78,6 +78,8 @@ jobs:
               repo: context.repo.repo,
               ref: `${process.env.SHA}`
             })
+            const commitDate = new Date(commit.data.commit.author.date).toLocaleString()
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -86,6 +88,7 @@ jobs:
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
             })
+          
             const output = `#### 🖌 Terraform Format and Style: \`${{ steps.fmt.outcome }}\`
             #### ⚙️ Terraform Initialization: \`${{ steps.init.outcome }}\`
             #### 🤖 Terraform Validation: \`${{ steps.validate.outcome }}\`
@@ -107,7 +110,7 @@ jobs:
 
               </details>
 
-            *Push by: @${{ github.actor }} - Push at: ${commit.data.commit.author.date}*`;
+            *Push by: @${{ github.actor }} - Push at: ${commitDate}*`;
 
             if (botComment) {
               github.rest.issues.updateComment({
