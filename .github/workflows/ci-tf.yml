@@ -32,6 +32,9 @@ jobs:
       - name: Checkeckout repository
         uses: actions/checkout@v4
 
+      - name: Change timezone to the local
+        run: sudo timedatectl set-timezone Asia/Ho_Chi_Minh
+
       - name: Authenticate to GCP
         uses: 'google-github-actions/auth@v2'
         with:
@@ -86,25 +89,25 @@ jobs:
             const output = `#### 🖌 Terraform Format and Style: \`${{ steps.fmt.outcome }}\`
             #### ⚙️ Terraform Initialization: \`${{ steps.init.outcome }}\`
             #### 🤖 Terraform Validation: \`${{ steps.validate.outcome }}\`
-            <details><summary>Validation Output</summary>
+              <details><summary>Validation Output</summary>
 
-            \`\`\`\n
-            ${{ steps.validate.outputs.stdout }}
-            \`\`\`
+              \`\`\`\n
+              ${{ steps.validate.outputs.stdout }}
+              \`\`\`
 
-            </details>
+              </details>
 
             #### 📖 Terraform Plan: \`${{ steps.plan.outcome }}\`
 
-            <details><summary>Plan Details</summary>
+              <details><summary>Plan Details</summary>
 
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
+              \`\`\`\n
+              ${process.env.PLAN}
+              \`\`\`
 
-            </details>
+              </details>
 
-            *Pusher: @${{ github.actor }}, Push at: ${commit.data.commit.author.date}*`;
+            *Push by: @${{ github.actor }} - Push at: ${commit.data.commit.author.date}*`;
 
             if (botComment) {
               github.rest.issues.updateComment({
