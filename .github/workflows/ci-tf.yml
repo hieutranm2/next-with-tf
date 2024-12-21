@@ -110,13 +110,7 @@ jobs:
 
               </details>
 
-            *Action: \`${{ github.event_name }}\`*
-            
-            *Workflow: \`${{ github.workflow }}\`*
-
-            *Push by: @${{ github.actor }}*
-            
-            *Push at: \`${commitDate}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`, Time: \`${commitDate}\`*`;
 
             if (botComment) {
               github.rest.issues.updateComment({
