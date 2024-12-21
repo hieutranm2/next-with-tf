@@ -50,11 +50,14 @@ jobs:
       - name: Terraform format
         id: fmt
         run: terraform fmt -check
+        continue-on-error: true
+
 
       - name: Terraform validate
         id: validate
-        run: terraform validate
-
+        run: terraform validate -no-color 
+        continue-on-error: true
+        
       - name: Terraform plan
         id: plan
         run: terraform plan -no-color -var-file="${{ github.base_ref }}/terraform.tfvars" -input=false
@@ -114,5 +117,5 @@ jobs:
             }
 
       - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
+        if: steps.plan.outcome == 'failure' || steps.fmt.outcome == 'failure' || steps.validate.outcome == 'failure'
         run: exit 1
