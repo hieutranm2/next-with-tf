@@ -66,9 +66,15 @@ jobs:
       - uses: actions/github-script@v7
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+          SHA: ${{ github.sha }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const commit = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `${process.env.SHA}`
+            })
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -77,9 +83,9 @@ jobs:
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
             })
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            const output = `#### 🖌 Terraform Format and Style: \`${{ steps.fmt.outcome }}\`
+            #### ⚙️ Terraform Initialization: \`${{ steps.init.outcome }}\`
+            #### 🤖 Terraform Validation: \`${{ steps.validate.outcome }}\`
             <details><summary>Validation Output</summary>
 
             \`\`\`\n
@@ -88,9 +94,9 @@ jobs:
 
             </details>
 
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### 📖 Terraform Plan: \`${{ steps.plan.outcome }}\`
 
-            <details><summary>Show Plan Details</summary>
+            <details><summary>Plan Details</summary>
 
             \`\`\`\n
             ${process.env.PLAN}
@@ -98,7 +104,7 @@ jobs:
 
             </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Push at: ${commit.data.commit.author.date}*`;
 
             if (botComment) {
               github.rest.issues.updateComment({
