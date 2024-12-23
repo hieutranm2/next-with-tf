@@ -33,7 +33,7 @@ module "artifact_registry" {
 
   region     = var.region
   project_id = var.project_id
-  labels = local.labels
+  labels     = local.labels
 
   repository_name = "${local.name_prefix}-repo"
 
@@ -59,7 +59,7 @@ module "cloud_run" {
 
   region     = var.region
   project_id = var.project_id
-  labels = local.labels
+  labels     = local.labels
 
   service_name  = "${local.name_prefix}-service"
   service_image = data.external.app_image.result.self_link

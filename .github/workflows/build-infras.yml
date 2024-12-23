@@ -1,0 +1,55 @@
+name: build-infras
+
+on:
+  workflow_run:
+    workflows: ["ci-terraform"]
+    branches:
+      - development
+      - staging
+      - production
+    types:
+      - completed
+  push:
+    branches:
+      - development
+      - staging
+      - production
+    paths:
+      - "terraform/**"
+      - ".github/workflows/build-infras.yml"
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    environment: ${{ github.ref_name }}
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 20
+    steps:
+      - name: Checkeckout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: 'google-github-actions/auth@v2'
+        with:
+          service_account: '${{ secrets.GCP_SA }}'
+          workload_identity_provider: '${{ secrets.GCP_WIP }}'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.2
+
+      - name: Terraform init
+        id: init
+        run: terraform init -backend-config="${{ github.ref_name }}/config.gcs.tfbackend"
+
+      - name: Terraform apply
+        id: apply
+        run: terraform apply -var-file="${{ github.ref_name }}/terraform.tfvars" -input=false -auto-approve
