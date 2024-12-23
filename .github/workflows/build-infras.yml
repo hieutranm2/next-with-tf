@@ -32,7 +32,7 @@ jobs:
 
       - name: Say hello
         run: |
-          sleep 15s
+          sleep 10s
           echo "Hello, world!"
         shell: bash
 
