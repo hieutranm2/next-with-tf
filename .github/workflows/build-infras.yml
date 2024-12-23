@@ -12,8 +12,7 @@ on:
       - ".github/workflows/build-infras.yml"
 
 concurrency:
-  group: ${{ github.workflow }}
-  cancel-in-progress: true
+  group: terraform
 
 jobs:
   build:
