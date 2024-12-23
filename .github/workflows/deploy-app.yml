@@ -25,13 +25,14 @@ permissions:
   actions: read
 
 jobs:
-  fake-job:
-    if: github.event_name == 'workflow_run' && github.event.action == 'requested'
+  wait-10s:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "This is a fake job"
+      - run: sleep 10s
+        shell: bash
   deploy:
     if: github.event_name == 'push' || github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+    needs: wait-10s
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
     steps:
