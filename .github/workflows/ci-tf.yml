@@ -9,6 +9,7 @@ on:
     paths:
       - "terraform/**"
       - ".github/workflows/ci-tf.yml"
+      - ".github/workflows/build-infras.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
