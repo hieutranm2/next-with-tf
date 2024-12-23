@@ -3,6 +3,18 @@ name: deploy-app
 on:
   workflow_run:
     workflows: ["ci-terraform"]
+    types:
+      - requested
+      - in_progress
+  pull_request:
+    branches:
+      - development
+      - staging
+      - production
+    paths-ignore:
+      - "terraform/**"
+      - ".github/workflows/ci-tf.yml"
+      - ".github/workflows/build-infras.yml"
 
 concurrency:
   group: ${{ github.ref_name }}-deployment
@@ -15,5 +27,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
     steps:
-      - run: echo "conclusion = ${{ github.event.workflow_run }}"
+      - run: echo "conclusion = ${{ github.event.workflow_run.conclusion }}"
