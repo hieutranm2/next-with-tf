@@ -88,9 +88,9 @@ jobs:
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
             })
           
-            const output = `- [${ '${{ steps.fmt.outcome }}' === 'success' ? 'x' : ' ' }] 🖌 Terraform Format and Style: \`${{ steps.fmt.outcome }}\`
-            - [${ '${{ steps.init.outcome }}' === 'success' ? 'x' : ' ' }] ⚙️ Terraform Initialization: \`${{ steps.init.outcome }}\`
-            - [${ '${{ steps.validate.outcome }}' === 'success' ? 'x' : ' ' }] 🤖 Terraform Validation: \`${{ steps.validate.outcome }}\`
+            const output = `##### 🖌 Terraform Format and Style: \`${{ steps.fmt.outcome }}\`
+            ##### ⚙️ Terraform Initialization: \`${{ steps.init.outcome }}\`
+            ##### 🤖 Terraform Validation: \`${{ steps.validate.outcome }}\`
               <details><summary>Validation Output</summary>
 
               \`\`\`\n
@@ -99,7 +99,7 @@ jobs:
 
               </details>
 
-            - [${ '${{ steps.plan.outcome }}' === 'success' ? 'x' : ' ' }] 📖 Terraform Plan: \`${{ steps.plan.outcome }}\`
+            ##### 📖 Terraform Plan: \`${{ steps.plan.outcome }}\`
 
               <details><summary>Plan Details</summary>
 
