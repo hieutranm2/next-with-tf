@@ -1,0 +1,19 @@
+name: deploy-app
+
+on:
+  workflow_run:
+    workflows: ["ci-terraform"]
+
+concurrency:
+  group: ${{ github.ref_name }}-deployment
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "conclusion = ${{ github.event.workflow_run }}"
