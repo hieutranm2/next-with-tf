@@ -1,4 +1,5 @@
 name: build-infras
+run-name: Build infrastructures with Terraform
 
 on:
   push:
@@ -30,27 +31,21 @@ jobs:
       - name: Checkeckout repository
         uses: actions/checkout@v4
 
-      - name: Say hello
-        run: |
-          sleep 10s
-          echo "Hello, world!"
-        shell: bash
+      - name: Authenticate to GCP
+        uses: 'google-github-actions/auth@v2'
+        with:
+          service_account: '${{ secrets.GCP_SA }}'
+          workload_identity_provider: '${{ secrets.GCP_WIP }}'
 
-      # - name: Authenticate to GCP
-      #   uses: 'google-github-actions/auth@v2'
-      #   with:
-      #     service_account: '${{ secrets.GCP_SA }}'
-      #     workload_identity_provider: '${{ secrets.GCP_WIP }}'
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.2
 
-      # - name: Setup Terraform
-      #   uses: hashicorp/setup-terraform@v3
-      #   with:
-      #     terraform_version: 1.10.2
+      - name: Terraform init
+        id: init
+        run: terraform init -backend-config="${{ github.ref_name }}/config.gcs.tfbackend"
 
-      # - name: Terraform init
-      #   id: init
-      #   run: terraform init -backend-config="${{ github.ref_name }}/config.gcs.tfbackend"
-
-      # - name: Terraform apply
-      #   id: apply
-      #   run: terraform apply -no-color -var-file="${{ github.ref_name }}/terraform.tfvars" -input=false -auto-approve
+      - name: Terraform apply
+        id: apply
+        run: terraform apply -no-color -var-file="${{ github.ref_name }}/terraform.tfvars" -input=false -auto-approve
