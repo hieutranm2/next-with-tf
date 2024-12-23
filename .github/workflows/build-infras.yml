@@ -52,4 +52,4 @@ jobs:
 
       - name: Terraform apply
         id: apply
-        run: terraform apply -var-file="${{ github.ref_name }}/terraform.tfvars" -input=false -auto-approve
+        run: terraform apply -no-color -var-file="${{ github.ref_name }}/terraform.tfvars" -input=false -auto-approve
