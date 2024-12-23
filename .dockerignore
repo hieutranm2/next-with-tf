@@ -1,2 +1,19 @@
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
+
+# Terraform
+terraform/
+
+# VSC
+.git/
+.github/
+
+# IDE
+.idea/
+.vscode/
+
+# Node
+node_modules/
+
+# Next.js
+.next/
