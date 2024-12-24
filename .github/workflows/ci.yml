@@ -1,0 +1,47 @@
+name: CI
+run-name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.ref_name }}-ci
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkeckout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js with Pnpm
+        uses: ./.github/actions/setup-pnpm
+        with:
+          run-install: true
+
+      - name: Check code style
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm check-types
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkeckout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js with Pnpm
+        uses: ./.github/actions/setup-pnpm
+        with:
+          run-install: true
+          
+      - name: Run test
+        run: pnpm test
