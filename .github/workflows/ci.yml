@@ -4,7 +4,9 @@ run-name: CI
 on:
   pull_request:
     branches:
-      - develop
+      - development
+      - staging
+      - production
     paths-ignore: 
       - "terraform/**"
       - ".github/workflows/ci-tf.yml"
