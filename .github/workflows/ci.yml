@@ -5,6 +5,10 @@ on:
   pull_request:
     branches:
       - develop
+    paths-ignore: 
+      - "terraform/**"
+      - ".github/workflows/ci-tf.yml"
+      - ".github/workflows/build-infras.yml"
 
 concurrency:
   group: ${{ github.ref_name }}-ci
@@ -42,6 +46,6 @@ jobs:
         uses: ./.github/actions/setup-pnpm
         with:
           run-install: true
-          
+
       - name: Run test
         run: pnpm test
